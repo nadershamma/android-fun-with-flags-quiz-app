@@ -114,4 +114,8 @@ public class MainActivityFragment extends Fragment {
             guessTableRows[rowNumber].setVisibility(View.VISIBLE);
         }
     }
+
+    public void updateRegions(SharedPreferences sharedPreferences) {
+        regionsSet = sharedPreferences.getStringSet(MainActivity.REGIONS, null);
+    }
 }
