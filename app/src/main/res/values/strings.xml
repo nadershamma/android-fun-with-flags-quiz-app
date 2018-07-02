@@ -8,11 +8,13 @@
     <string name="guess_country">Guess the Country</string>
     <string name="results">%1$d guesses, %2$.02f%% correct</string>
     <string name="incorrect_answer">Incorrect!</string>
-    <string name="default_region_message">One region must be selected. Setting North America as the default region.</string>
+    <string name="default_region_message">
+        One region must be selected. Setting Europe as the default region.
+    </string>
     <string name="restarting_quiz">Quiz will restart with your new settings</string>
     <string name="question">Question %1$d of %2$d</string>
     <string name="reset_quiz">Reset Quiz</string>
     <string name="image_description">Image of the current flag in the quiz</string>
-    <string name="default_region">North America</string>
+    <string name="default_region">Europe</string>
     <string name="title_activity_settings">Settings</string>
 </resources>
