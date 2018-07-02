@@ -68,6 +68,22 @@ public class MainActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+
+        fileNameList = new ArrayList<>();
+        quizCountriesList = new ArrayList<>();
+        random = new SecureRandom();
+        handler = new Handler();
+
+        shakeAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.incorrect_shake);
+        shakeAnimation.setRepeatCount(3);
+
+        quizConstraintLayout = (ConstraintLayout) view.findViewById(R.id.quizConstraintLayout);
+        questionNumberTextView = (TextView) view.findViewById(R.id.questionNumberTextView);
+        flagImageView = (ImageView) view.findViewById(R.id.flagImageView);
+        guessTableRows = new TableRow[4];
+
+        return view;
     }
 }
