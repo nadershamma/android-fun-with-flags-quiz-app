@@ -88,13 +88,12 @@ public class MainActivityFragment extends Fragment {
         answerTextView = view.findViewById(R.id.answerTextView);
 
         for (int i = 0; i < answersTableLayout.getChildCount(); i++) {
-            try{
+            try {
                 if (answersTableLayout.getChildAt(i) instanceof TableRow) {
                     guessTableRows[i] = (TableRow) answersTableLayout.getChildAt(i);
                 }
-            }
-            catch (ArrayStoreException e ){
-                break;
+            } catch (ArrayStoreException e) {
+                Log.e(TAG, "Error getting button rows on loop #" + String.valueOf(i), e);
             }
         }
 
@@ -106,7 +105,7 @@ public class MainActivityFragment extends Fragment {
         String choices = sharedPreferences.getString(MainActivity.CHOICES, null);
         guessRows = Integer.parseInt(choices) / 2;
 
-        for (TableRow row: guessTableRows) {
+        for (TableRow row : guessTableRows) {
             row.setVisibility(View.GONE);
         }
 
@@ -117,5 +116,41 @@ public class MainActivityFragment extends Fragment {
 
     public void updateRegions(SharedPreferences sharedPreferences) {
         regionsSet = sharedPreferences.getStringSet(MainActivity.REGIONS, null);
+    }
+
+    public void resetQuiz() {
+        AssetManager assets = getActivity().getAssets();
+        fileNameList.clear();
+
+        try {
+            for (String region : regionsSet) {
+                String[] paths = assets.list(region);
+                for (String path : paths) {
+                    fileNameList.add(path.replace(".png", ""));
+                }
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Error loading image file names", e);
+        }
+
+        correctAnswers = 0;
+        totalGuesses = 0;
+        quizCountriesList.clear();
+
+        int flagCounter = 1;
+        int numberOfFlags = fileNameList.size();
+
+        while (flagCounter <= FLAGS_IN_QUIZ) {
+            int randomIndex = random.nextInt(numberOfFlags);
+
+            String filename = fileNameList.get(randomIndex);
+
+            if (!quizCountriesList.contains(filename)) {
+                quizCountriesList.add(filename);
+                ++flagCounter;
+            }
+        }
+
+        loadNextFlag();
     }
 }
