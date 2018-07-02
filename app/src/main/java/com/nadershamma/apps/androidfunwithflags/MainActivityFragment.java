@@ -101,4 +101,17 @@ public class MainActivityFragment extends Fragment {
         questionNumberTextView.setText(getString(R.string.question, 1, FLAGS_IN_QUIZ));
         return view;
     }
+
+    public void updateGuessRows(SharedPreferences sharedPreferences) {
+        String choices = sharedPreferences.getString(MainActivity.CHOICES, null);
+        guessRows = Integer.parseInt(choices) / 2;
+
+        for (TableRow row: guessTableRows) {
+            row.setVisibility(View.GONE);
+        }
+
+        for (int rowNumber = 0; rowNumber < guessRows; rowNumber++) {
+            guessTableRows[rowNumber].setVisibility(View.VISIBLE);
+        }
+    }
 }
