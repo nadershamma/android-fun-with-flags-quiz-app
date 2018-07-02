@@ -2,6 +2,7 @@ package com.nadershamma.apps.androidfunwithflags;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InvalidObjectException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,11 +80,25 @@ public class MainActivityFragment extends Fragment {
         shakeAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.incorrect_shake);
         shakeAnimation.setRepeatCount(3);
 
-        quizConstraintLayout = (ConstraintLayout) view.findViewById(R.id.quizConstraintLayout);
-        questionNumberTextView = (TextView) view.findViewById(R.id.questionNumberTextView);
-        flagImageView = (ImageView) view.findViewById(R.id.flagImageView);
+        quizConstraintLayout = view.findViewById(R.id.quizConstraintLayout);
+        questionNumberTextView = view.findViewById(R.id.questionNumberTextView);
+        flagImageView = view.findViewById(R.id.flagImageView);
+        answersTableLayout = view.findViewById(R.id.answersTableLayout);
         guessTableRows = new TableRow[4];
+        answerTextView = view.findViewById(R.id.answerTextView);
 
+        for (int i = 0; i < answersTableLayout.getChildCount(); i++) {
+            try{
+                if (answersTableLayout.getChildAt(i) instanceof TableRow) {
+                    guessTableRows[i] = (TableRow) answersTableLayout.getChildAt(i);
+                }
+            }
+            catch (ArrayStoreException e ){
+                break;
+            }
+        }
+
+        questionNumberTextView.setText(getString(R.string.question, 1, FLAGS_IN_QUIZ));
         return view;
     }
 }
