@@ -17,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableWrapper;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -152,5 +153,52 @@ public class MainActivityFragment extends Fragment {
         }
 
         loadNextFlag();
+    }
+
+
+    private void loadNextFlag() {
+        String nextImage = quizCountriesList.remove(0);
+        correctAnswer = nextImage;
+        answerTextView.setText("");
+
+        questionNumberTextView.setText(
+                getString(R.string.question, (correctAnswers + 1), FLAGS_IN_QUIZ));
+
+        String region = nextImage.substring(0, nextImage.indexOf('-'));
+
+        AssetManager assets = getActivity().getAssets();
+
+        try (InputStream stream = assets.open(region + "/" + nextImage + ".png")) {
+            Drawable flag = Drawable.createFromStream(stream, nextImage);
+            flagImageView.setImageDrawable(flag);
+            animate(false);
+        } catch (IOException e) {
+            Log.e(TAG, "Error Loading " + nextImage, e);
+        }
+
+        Collections.shuffle(fileNameList);
+
+        int correct = fileNameList.indexOf(correctAnswer);
+        fileNameList.add(fileNameList.remove(correct));
+
+        for (int rowNumber = 0; rowNumber < guessRows; rowNumber++) {
+            for (int column = 0; column < guessTableRows[rowNumber].getChildCount(); column++) {
+                Button guessButton = (Button) guessTableRows[rowNumber].getVirtualChildAt(column);
+                guessButton.setEnabled(true);
+                String filename = fileNameList.get((row * 2) + column);
+
+                guessButton.setText(getCountryName(filename));
+            }
+        }
+
+        int row = random.nextInt(guessRows);
+        int column = random.nextInt(2);
+        TableRow randomRow = guessTableRows[row];
+        String countryName = getCountryName(correctAnswer);
+        ((Button) randomRow.getChildAt(column)).setText(countryName);
+    }
+
+    private String getCountryName(String name) {
+        return name.substring(name.indexOf('-') + 1).replace('_', ' ');
     }
 }
