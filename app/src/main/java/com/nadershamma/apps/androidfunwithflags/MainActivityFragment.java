@@ -36,7 +36,7 @@ import com.nadershamma.apps.lifecyclehelpers.QuizViewModel;
 public class MainActivityFragment extends Fragment {
 
     private SecureRandom random;
-    private Handler handler;
+
     private Animation shakeAnimation;
 
     private ConstraintLayout quizConstraintLayout;
@@ -62,8 +62,6 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-
-        this.handler = new Handler();
 
         this.shakeAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.incorrect_shake);
         this.shakeAnimation.setRepeatCount(3);
@@ -175,7 +173,7 @@ public class MainActivityFragment extends Fragment {
         ((Button) randomRow.getChildAt(column)).setText(this.quizViewModel.getCorrectCountryName());
     }
 
-    private void animate(boolean animateOut) {
+    public void animate(boolean animateOut) {
         if (this.quizViewModel.getCorrectAnswers() == 0) {
             return;
         }
@@ -200,6 +198,13 @@ public class MainActivityFragment extends Fragment {
 
         animator.setDuration(500);
         animator.start();
+    }
+
+    public void incorrectAnswerAnimation(){
+        flagImageView.startAnimation(shakeAnimation);
+
+        answerTextView.setText(R.string.incorrect_answer);
+        answerTextView.setTextColor(getResources().getColor(R.color.wrong_answer));
     }
 }
 

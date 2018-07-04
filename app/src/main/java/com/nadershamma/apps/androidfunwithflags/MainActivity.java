@@ -65,8 +65,9 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         if (preferencesChanged) {
-            // TODO call MainActivityFragment Methods
-            // Page 143
+            this.quizViewModel.setRegionsSet(
+                    PreferenceManager.getDefaultSharedPreferences(this));
+            this.quizFragment.resetQuiz();
             preferencesChanged = false;
         }
     }
