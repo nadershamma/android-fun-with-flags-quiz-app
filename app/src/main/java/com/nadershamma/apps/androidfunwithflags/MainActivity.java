@@ -1,10 +1,7 @@
 package com.nadershamma.apps.androidfunwithflags;
 
-import android.app.Fragment;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -14,11 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+import com.nadershamma.apps.eventhandlers.PreferenceChangeListener;
 import com.nadershamma.apps.lifecyclehelpers.QuizViewModel;
-
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
     public static final String CHOICES = "pref_numberOfChoices";
@@ -48,43 +43,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class PreferencesChangeListener implements OnSharedPreferenceChangeListener {
-        private MainActivityFragment quizFragment;
-        private QuizViewModel quizViewModel;
-
-        public PreferencesChangeListener(MainActivityFragment quizFragment, QuizViewModel quizViewModel) {
-            this.quizFragment = quizFragment;
-            this.quizViewModel = quizViewModel;
-        }
-
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            preferencesChanged = true;
-
-            if (key.equals(REGIONS)) {
-                this.quizViewModel.setGuessRows(sharedPreferences.getString(
-                        MainActivity.CHOICES, null));
-                this.quizFragment.resetQuiz();
-            } else if (key.equals(CHOICES)) {
-                Set<String> regions = sharedPreferences.getStringSet(REGIONS, null);
-                if (regions != null && regions.size() > 0) {
-                    this.quizViewModel.setRegionsSet(sharedPreferences);
-                    this.quizFragment.resetQuiz();
-                } else {
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    regions.add(getString(R.string.default_region));
-                    editor.putStringSet(REGIONS, regions);
-                    editor.apply();
-                    Toast.makeText(MainActivity.this, R.string.default_region_message,
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-
-            Toast.makeText(MainActivity.this, R.string.restarting_quiz,
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         this.quizFragment = (MainActivityFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.quizFragment);
 
-        this.preferencesChangeListener = new PreferencesChangeListener(
+        this.preferencesChangeListener = new PreferenceChangeListener(MainActivity.this,
                 this.quizFragment, this.quizViewModel);
 
         this.setContentView(R.layout.activity_main);
@@ -123,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
         } else {
             return false;
         }
-
     }
 
     @Override
@@ -134,12 +91,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public int getScreenSize() {
-        int screenSize = getResources().getConfiguration().screenLayout &
+         return getResources().getConfiguration().screenLayout &
                 Configuration.SCREENLAYOUT_SIZE_MASK;
-        return screenSize;
     }
 
     public MainActivityFragment getQuizFragment() {
         return this.quizFragment;
+    }
+
+    public static String getCHOICES() {
+        return CHOICES;
+    }
+
+    public static String getREGIONS() {
+        return REGIONS;
+    }
+
+    public void setPreferencesChanged(boolean preferencesChanged) {
+        this.preferencesChanged = preferencesChanged;
     }
 }

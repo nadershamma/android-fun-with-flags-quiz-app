@@ -35,7 +35,6 @@ import com.nadershamma.apps.lifecyclehelpers.QuizViewModel;
 
 public class MainActivityFragment extends Fragment {
 
-    private String correctAnswer;
     private SecureRandom random;
     private Handler handler;
     private Animation shakeAnimation;
@@ -170,8 +169,8 @@ public class MainActivityFragment extends Fragment {
             }
         }
 
-        int row = random.nextInt(this.quizViewModel.getGuessRows());
-        int column = random.nextInt(2);
+        int row = this.random.nextInt(this.quizViewModel.getGuessRows());
+        int column = this.random.nextInt(2);
         TableRow randomRow = guessTableRows[row];
         ((Button) randomRow.getChildAt(column)).setText(this.quizViewModel.getCorrectCountryName());
     }

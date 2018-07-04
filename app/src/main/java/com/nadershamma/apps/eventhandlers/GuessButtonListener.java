@@ -1,5 +1,6 @@
 package com.nadershamma.apps.eventhandlers;
 
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -13,7 +14,6 @@ import com.nadershamma.apps.lifecyclehelpers.QuizViewModel;
 public class GuessButtonListener implements OnClickListener {
     private QuizViewModel quizViewModel;
     private TextView answerTextView;
-    private ResultsDialogFragment quizResults;
     private MainActivityFragment mainActivityFragment;
 
     public GuessButtonListener(MainActivityFragment mainActivityFragment,
@@ -40,8 +40,16 @@ public class GuessButtonListener implements OnClickListener {
             // TODO
             // this.mainActivityFragment.disableButtons();
 
-            this.quizResults = new ResultsDialogFragment();
-            this.quizResults.show(this.mainActivityFragment.getFragmentManager(), "Quiz Results");
+            ResultsDialogFragment quizResults = new ResultsDialogFragment();
+            try{
+                quizResults.show(this.mainActivityFragment.getFragmentManager(), "Quiz Results");
+            } catch (NullPointerException e){
+                Log.e(QuizViewModel.getTag(),
+                        "GuessButtonListener: this.mainActivityFragment.getFragmentManager() " +
+                                "returned null",
+                        e);
+            }
+
         }
     }
 }
