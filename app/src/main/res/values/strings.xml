@@ -17,4 +17,7 @@
     <string name="image_description">Image of the current flag in the quiz</string>
     <string name="default_region">Europe</string>
     <string name="title_activity_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
