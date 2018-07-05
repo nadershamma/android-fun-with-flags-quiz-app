@@ -36,7 +36,7 @@ public class PreferenceChangeListener implements OnSharedPreferenceChangeListene
             Set<String> regions = sharedPreferences.getStringSet(this.mainActivity.getREGIONS(),
                     null);
             if (regions != null && regions.size() > 0) {
-                this.quizViewModel.setRegionsSet(sharedPreferences);
+                this.quizViewModel.setRegionsSet(regions);
                 this.quizFragment.resetQuiz();
             } else {
                 SharedPreferences.Editor editor = sharedPreferences.edit();

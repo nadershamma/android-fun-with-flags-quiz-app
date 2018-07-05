@@ -94,8 +94,8 @@ public class QuizViewModel extends ViewModel {
         return regionsSet;
     }
 
-    public void setRegionsSet(SharedPreferences sharedPreferences) {
-        this.regionsSet = sharedPreferences.getStringSet(MainActivity.REGIONS, null);
+    public void setRegionsSet(Set<String> regions) {
+        this.regionsSet = regions;
     }
 
     public String getCorrectAnswer() {

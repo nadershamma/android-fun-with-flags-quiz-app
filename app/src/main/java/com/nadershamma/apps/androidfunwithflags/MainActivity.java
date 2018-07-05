@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import com.nadershamma.apps.eventhandlers.PreferenceChangeListener;
 import com.nadershamma.apps.lifecyclehelpers.QuizViewModel;
 
+import java.util.Set;
+
 public class MainActivity extends AppCompatActivity {
     public static final String CHOICES = "pref_numberOfChoices";
     public static final String REGIONS = "pref_regionsToInclude";
@@ -48,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         this.quizViewModel = ViewModelProviders.of(this).get(QuizViewModel.class);
-        this.quizFragment = (MainActivityFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.quizFragment);
-
         this.preferencesChangeListener = new PreferenceChangeListener(MainActivity.this,
                 this.quizFragment, this.quizViewModel);
 
@@ -63,10 +62,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        this.quizFragment = (MainActivityFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.quizFragment);
+        this.quizViewModel.setGuessRows(PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(CHOICES, null));
+        this.quizViewModel.setRegionsSet(PreferenceManager.getDefaultSharedPreferences(this)
+                .getStringSet(REGIONS, null));
+
+        this.quizFragment.resetQuiz();
 
         if (preferencesChanged) {
-            this.quizViewModel.setRegionsSet(
-                    PreferenceManager.getDefaultSharedPreferences(this));
+            this.quizViewModel.setRegionsSet(PreferenceManager.getDefaultSharedPreferences(this)
+                    .getStringSet(REGIONS, null));
             this.quizFragment.resetQuiz();
             preferencesChanged = false;
         }
