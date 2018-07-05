@@ -41,8 +41,7 @@ public class GuessButtonListener implements OnClickListener {
             this.answerTextView.setTextColor(
                     this.mainActivityFragment.getResources().getColor(R.color.correct_answer));
 
-            // TODO
-            // this.mainActivityFragment.disableButtons();
+            this.mainActivityFragment.disableButtons();
 
             if (this.quizViewModel.getCorrectAnswers() == this.quizViewModel.getFlagsInQuiz()) {
                 ResultsDialogFragment quizResults = new ResultsDialogFragment();

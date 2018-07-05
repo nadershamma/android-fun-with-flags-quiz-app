@@ -11,9 +11,7 @@ import android.content.res.AssetManager;
 import android.graphics.drawable.Drawable;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,20 +34,13 @@ import com.nadershamma.apps.lifecyclehelpers.QuizViewModel;
 public class MainActivityFragment extends Fragment {
 
     private SecureRandom random;
-
     private Animation shakeAnimation;
-
     private ConstraintLayout quizConstraintLayout;
     private TextView questionNumberTextView;
     private ImageView flagImageView;
-    private TableLayout answersTableLayout;
     private TableRow[] guessTableRows;
     private TextView answerTextView;
-
     private QuizViewModel quizViewModel;
-    private DialogFragment quizResults;
-
-    private OnClickListener guessButtonListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,34 +53,36 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+        OnClickListener guessButtonListener = new GuessButtonListener(this,
+                this.quizViewModel, this.answerTextView);
+        TableLayout answersTableLayout = view.findViewById(R.id.answersTableLayout);
 
+        this.random = new SecureRandom();
         this.shakeAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.incorrect_shake);
         this.shakeAnimation.setRepeatCount(3);
-
         this.quizConstraintLayout = view.findViewById(R.id.quizConstraintLayout);
         this.questionNumberTextView = view.findViewById(R.id.questionNumberTextView);
         this.flagImageView = view.findViewById(R.id.flagImageView);
-        this.answersTableLayout = view.findViewById(R.id.answersTableLayout);
+
         this.guessTableRows = new TableRow[4];
         this.answerTextView = view.findViewById(R.id.answerTextView);
 
-        this.guessButtonListener = new GuessButtonListener(this,
-                this.quizViewModel, this.answerTextView);
 
-        for (int i = 0; i < this.answersTableLayout.getChildCount(); i++) {
+
+        for (int i = 0; i < answersTableLayout.getChildCount(); i++) {
             try {
-                if (this.answersTableLayout.getChildAt(i) instanceof TableRow) {
-                    this.guessTableRows[i] = (TableRow) this.answersTableLayout.getChildAt(i);
+                if (answersTableLayout.getChildAt(i) instanceof TableRow) {
+                    this.guessTableRows[i] = (TableRow) answersTableLayout.getChildAt(i);
                 }
             } catch (ArrayStoreException e) {
-                Log.e(this.quizViewModel.getTag(),
+                Log.e(QuizViewModel.getTag(),
                         "Error getting button rows on loop #" + String.valueOf(i), e);
             }
         }
 
         for (TableRow row : this.guessTableRows) {
             for (int column = 0; column < row.getChildCount(); column++) {
-                (row.getChildAt(column)).setOnClickListener(this.guessButtonListener);
+                (row.getChildAt(column)).setOnClickListener(guessButtonListener);
             }
         }
 
@@ -205,6 +198,14 @@ public class MainActivityFragment extends Fragment {
 
         answerTextView.setText(R.string.incorrect_answer);
         answerTextView.setTextColor(getResources().getColor(R.color.wrong_answer));
+    }
+
+    public void disableButtons() {
+        for (TableRow row : this.guessTableRows) {
+            for (int column = 0; column < row.getChildCount(); column++) {
+                (row.getChildAt(column)).setEnabled(false);
+            }
+        }
     }
 }
 
