@@ -9,7 +9,7 @@ which country the flag is from. The player can choose flags [(1)](#1) from a num
 - Oceania
 - South America
 
-<p><img src="https://raw.githubusercontent.com/nadershamma/android-fun-with-flags-quiz-app/master/misc/fun-with-flags-phone-demo.gif" alt="Screenshot of app on a phone" width="300px" heigh="auto" /></p>
+<p><img src="https://raw.githubusercontent.com/nadershamma/android-fun-with-flags-quiz-app/master/misc/fun-with-flags-phone-demo_1024.gif" alt="Screenshot of app on a phone" width="300px" heigh="auto" /></p>
 
 They then choose the difficulty of the game where they will presented with 2, 4, 6 or 8 options to guess from.
 
