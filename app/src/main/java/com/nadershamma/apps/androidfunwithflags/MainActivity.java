@@ -48,32 +48,31 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        this.setSharedPreferences();
+
         this.quizViewModel = ViewModelProviders.of(this).get(QuizViewModel.class);
         this.preferencesChangeListener = new PreferenceChangeListener(MainActivity.this);
 
-        this.setContentView(R.layout.activity_main);
-        this.setSupportActionBar(toolbar);
-        this.setSharedPreferences();
         this.screenSetUp();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        this.quizFragment = (MainActivityFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.quizFragment);
-        this.quizViewModel.setGuessRows(PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(CHOICES, null));
-        this.quizViewModel.setRegionsSet(PreferenceManager.getDefaultSharedPreferences(this)
-                .getStringSet(REGIONS, null));
-
-        this.quizFragment.resetQuiz();
-
         if (preferencesChanged) {
+            this.quizFragment = (MainActivityFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.quizFragment);
+            this.quizViewModel.setGuessRows(PreferenceManager.getDefaultSharedPreferences(this)
+                    .getString(CHOICES, null));
             this.quizViewModel.setRegionsSet(PreferenceManager.getDefaultSharedPreferences(this)
                     .getStringSet(REGIONS, null));
+
             this.quizFragment.resetQuiz();
+
             preferencesChanged = false;
         }
     }
