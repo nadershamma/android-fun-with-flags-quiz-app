@@ -13,18 +13,11 @@ import com.nadershamma.apps.androidfunwithflags.ResultsDialogFragment;
 import com.nadershamma.apps.lifecyclehelpers.QuizViewModel;
 
 public class GuessButtonListener implements OnClickListener {
-    private QuizViewModel quizViewModel;
-    private TextView answerTextView;
     private MainActivityFragment mainActivityFragment;
     private Handler handler;
 
-    public GuessButtonListener(MainActivityFragment mainActivityFragment,
-                               QuizViewModel quizViewModel,
-                               TextView answerTextView) {
-        this.quizViewModel = quizViewModel;
+    public GuessButtonListener(MainActivityFragment mainActivityFragment) {
         this.mainActivityFragment = mainActivityFragment;
-        this.answerTextView = answerTextView;
-
         this.handler = new Handler();
     }
 
@@ -32,18 +25,19 @@ public class GuessButtonListener implements OnClickListener {
     public void onClick(View v) {
         Button guessButton = ((Button) v);
         String guess = guessButton.getText().toString();
-        String answer = quizViewModel.getCorrectCountryName();
-        this.quizViewModel.setTotalGuesses(1);
+        String answer = this.mainActivityFragment.getQuizViewModel().getCorrectCountryName();
+        this.mainActivityFragment.getQuizViewModel().setTotalGuesses(1);
 
         if (guess.equals(answer)) {
-            this.quizViewModel.setCorrectAnswers(1);
-            this.answerTextView.setText(answer + "!");
-            this.answerTextView.setTextColor(
+            this.mainActivityFragment.getQuizViewModel().setCorrectAnswers(1);
+            this.mainActivityFragment.getAnswerTextView().setText(answer + "!");
+            this.mainActivityFragment.getAnswerTextView().setTextColor(
                     this.mainActivityFragment.getResources().getColor(R.color.correct_answer));
 
             this.mainActivityFragment.disableButtons();
 
-            if (this.quizViewModel.getCorrectAnswers() == this.quizViewModel.getFlagsInQuiz()) {
+            if (this.mainActivityFragment.getQuizViewModel().getCorrectAnswers()
+                    == QuizViewModel.getFlagsInQuiz()) {
                 ResultsDialogFragment quizResults = new ResultsDialogFragment();
                 quizResults.setCancelable(false);
                 try {

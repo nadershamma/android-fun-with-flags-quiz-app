@@ -12,16 +12,10 @@ import com.nadershamma.apps.lifecyclehelpers.QuizViewModel;
 import java.util.Set;
 
 public class PreferenceChangeListener implements OnSharedPreferenceChangeListener {
-    private MainActivityFragment quizFragment;
-    private QuizViewModel quizViewModel;
     private MainActivity mainActivity;
 
-    public PreferenceChangeListener(MainActivity mainActivity,
-                                    MainActivityFragment quizFragment,
-                                    QuizViewModel quizViewModel) {
+    public PreferenceChangeListener(MainActivity mainActivity) {
         this.mainActivity = mainActivity;
-        this.quizFragment = quizFragment;
-        this.quizViewModel = quizViewModel;
     }
 
     @Override
@@ -29,15 +23,15 @@ public class PreferenceChangeListener implements OnSharedPreferenceChangeListene
         this.mainActivity.setPreferencesChanged(true);
 
         if (key.equals(this.mainActivity.getREGIONS())) {
-            this.quizViewModel.setGuessRows(sharedPreferences.getString(
+            this.mainActivity.getQuizViewModel().setGuessRows(sharedPreferences.getString(
                     MainActivity.CHOICES, null));
-            this.quizFragment.resetQuiz();
+            this.mainActivity.getQuizFragment().resetQuiz();
         } else if (key.equals(this.mainActivity.getCHOICES())) {
             Set<String> regions = sharedPreferences.getStringSet(this.mainActivity.getREGIONS(),
                     null);
             if (regions != null && regions.size() > 0) {
-                this.quizViewModel.setRegionsSet(regions);
-                this.quizFragment.resetQuiz();
+                this.mainActivity.getQuizViewModel().setRegionsSet(regions);
+                this.mainActivity.getQuizFragment().resetQuiz();
             } else {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 regions.add(this.mainActivity.getString(R.string.default_region));

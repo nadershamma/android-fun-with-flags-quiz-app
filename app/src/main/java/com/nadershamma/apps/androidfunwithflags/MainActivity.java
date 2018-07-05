@@ -48,10 +48,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         this.quizViewModel = ViewModelProviders.of(this).get(QuizViewModel.class);
-        this.preferencesChangeListener = new PreferenceChangeListener(MainActivity.this,
-                this.quizFragment, this.quizViewModel);
+        this.preferencesChangeListener = new PreferenceChangeListener(MainActivity.this);
 
         this.setContentView(R.layout.activity_main);
         this.setSupportActionBar(toolbar);
@@ -99,12 +98,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public int getScreenSize() {
-         return getResources().getConfiguration().screenLayout &
+        return getResources().getConfiguration().screenLayout &
                 Configuration.SCREENLAYOUT_SIZE_MASK;
     }
 
     public MainActivityFragment getQuizFragment() {
         return this.quizFragment;
+    }
+
+    public QuizViewModel getQuizViewModel() {
+        return quizViewModel;
     }
 
     public static String getCHOICES() {
@@ -118,4 +121,6 @@ public class MainActivity extends AppCompatActivity {
     public void setPreferencesChanged(boolean preferencesChanged) {
         this.preferencesChanged = preferencesChanged;
     }
+
+
 }

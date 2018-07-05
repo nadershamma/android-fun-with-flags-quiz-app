@@ -53,8 +53,7 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        OnClickListener guessButtonListener = new GuessButtonListener(this,
-                this.quizViewModel, this.answerTextView);
+        OnClickListener guessButtonListener = new GuessButtonListener(this);
         TableLayout answersTableLayout = view.findViewById(R.id.answersTableLayout);
 
         this.random = new SecureRandom();
@@ -206,6 +205,14 @@ public class MainActivityFragment extends Fragment {
                 (row.getChildAt(column)).setEnabled(false);
             }
         }
+    }
+
+    public TextView getAnswerTextView() {
+        return answerTextView;
+    }
+
+    public QuizViewModel getQuizViewModel() {
+        return quizViewModel;
     }
 }
 
