@@ -48,15 +48,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.quizViewModel = ViewModelProviders.of(this).get(QuizViewModel.class);
+        this.preferencesChangeListener = new PreferenceChangeListener(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         this.setSharedPreferences();
-
-        this.quizViewModel = ViewModelProviders.of(this).get(QuizViewModel.class);
-        this.preferencesChangeListener = new PreferenceChangeListener(MainActivity.this);
-
         this.screenSetUp();
     }
 
