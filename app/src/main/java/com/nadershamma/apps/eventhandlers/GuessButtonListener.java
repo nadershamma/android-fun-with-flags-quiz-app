@@ -48,7 +48,7 @@ public class GuessButtonListener implements OnClickListener {
                 ResultsDialogFragment quizResults = new ResultsDialogFragment();
                 quizResults.setCancelable(false);
                 try {
-                    quizResults.show(this.mainActivityFragment.getFragmentManager(), "Quiz Results");
+                    quizResults.show(this.mainActivityFragment.getChildFragmentManager(), "Quiz Results");
                 } catch (NullPointerException e) {
                     Log.e(QuizViewModel.getTag(),
                             "GuessButtonListener: this.mainActivityFragment.getFragmentManager() " +
